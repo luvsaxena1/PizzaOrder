@@ -19,18 +19,18 @@ public class SwaggerConfig {
         Docket docket = new Docket(DocumentationType.SWAGGER_2);
 
         return docket
-                .groupName("sensor-emulation")
+                .groupName("pizza-order")
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("io.iot.platform.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.aquent.platform.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("The Sensor Emulation API")
-                .description("Sensor Emulation API")
+                .title("The Pizza Order Emulation API")
+                .description("Conver the Order Details into Human Readable form")
                 .termsOfServiceUrl("")
                 .license("")
                 .licenseUrl("")
