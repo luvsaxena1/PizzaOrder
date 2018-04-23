@@ -6,7 +6,7 @@ import com.aquent.platform.dto.OrderDetailsDto;
 
 public interface IOrderDetailTransformService {
 	
-	Boolean readFileFromSource();
-	Boolean writeFileToDestination(List<OrderDetailsDto> orderDetailList);
+	List<OrderDetailsDto> readFileFromSource(String sourceLocation , String destinationLocation);
+	Boolean writeFileToDestination(List<OrderDetailsDto> orderDetailList, String destinationLocation);
 
 }

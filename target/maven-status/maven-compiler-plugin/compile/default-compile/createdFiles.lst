@@ -1,7 +1,8 @@
+com\aquent\platform\entity\OrderDetails.class
 com\aquent\platform\util\OrderDetailsSortingUtil.class
 com\aquent\platform\config\SwaggerConfig.class
 com\aquent\platform\dto\OrderDetailsDto.class
+com\aquent\platform\controller\OrderDetailsController.class
 com\aquent\platform\service\IOrderDetailTransformService.class
-com\aquent\platform\config\ApplicationStartUp.class
 com\aquent\platform\Application.class
 com\aquent\platform\service\impl\OrderDetailTransformService.class

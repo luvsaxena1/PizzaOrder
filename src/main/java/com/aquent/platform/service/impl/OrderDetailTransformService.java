@@ -17,7 +17,6 @@ import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -38,15 +37,15 @@ public class OrderDetailTransformService implements IOrderDetailTransformService
 
 	private static final Logger logger = LoggerFactory.getLogger(Application.class);
 
-	@Value("${file.source}")
-	private String sourceLocation;
-
-	@Value("${file.destination}")
-	private String destinationLocation;
+	// @Value("${file.source}")
+	// private String sourceLocation;
+	//
+	// @Value("${file.destination}")
+	// private String destinationLocation;
 
 	private List<OrderDetailsDto> orderDetailList = new ArrayList<>();
 
-	public Boolean readFileFromSource() {
+	public List<OrderDetailsDto> readFileFromSource(String sourceLocation, String destinationLocation) {
 		logger.info(
 				"OrderDetailTransformService.readFileFromSource():: Request is recieved from ApplicationStartUp to execute readFileFromSource()");
 		try (Stream<String> stream = Files.lines(Paths.get(sourceLocation))) {
@@ -54,18 +53,18 @@ public class OrderDetailTransformService implements IOrderDetailTransformService
 		} catch (NoSuchFileException e) {
 			logger.error("Error caught because file name not found at location {}", sourceLocation);
 			e.printStackTrace();
-		}
-
-		catch (IOException e) {
+		} catch (IOException e) {
 			logger.error("Error caught while reading or opening the file on location {}", sourceLocation);
 			e.printStackTrace();
 		}
 		Collections.sort(orderDetailList, new OrderDetailsSortingUtil());
-		return writeFileToDestination(orderDetailList);
+		writeFileToDestination(orderDetailList, destinationLocation);
+		return orderDetailList;
 	}
 
+
 	@Override
-	public Boolean writeFileToDestination(List<OrderDetailsDto> orderDetailList) {
+	public Boolean writeFileToDestination(List<OrderDetailsDto> orderDetailList, String destinationLocation) {
 		logger.info(
 				"OrderDetailTransformService.writeFileToDestination():: Request is recieved to write to destination file on location {}",
 				destinationLocation);
@@ -74,7 +73,7 @@ public class OrderDetailTransformService implements IOrderDetailTransformService
 		try (BufferedWriter writer = Files.newBufferedWriter(path)) {
 			writer.write("Order" + "\t\t\t" + "Time IN GMT" + "\t\t\t" + "Time In Your Zone");
 			writer.newLine();
-			if (!(orderDetailList.isEmpty() || orderDetailList == null)) {
+			if (!(orderDetailList == null || orderDetailList.isEmpty())) {
 				for (OrderDetailsDto detailsDto : orderDetailList) {
 
 					LocalDateTime date = LocalDateTime.ofInstant(Instant.ofEpochMilli(detailsDto.getOrderTime() * 1000),
@@ -111,8 +110,10 @@ public class OrderDetailTransformService implements IOrderDetailTransformService
 			} catch (NumberFormatException exception) {
 				logger.error("Error caught while parsing the order time {} from string to long", eachLine[1]);
 				exception.printStackTrace();
+				order.setOrderTime(0L);
 			}
 			orderDetailList.add(order);
 		}
 	}
+
 }
