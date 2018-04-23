@@ -8,7 +8,8 @@ Please follow the following steps to run the application :
 
 NOTE: --file.source and file.destination path will be your local system path.
 
-The above command deploy the Spring boot application on in build tomcat server on port 8080
+The above command deploy the Spring boot application on inbuild tomcat server.
+Now the application is running on port 8080
 
 5. Convert the source file to human readable file by using the below Rest API call
 
